@@ -1,6 +1,9 @@
 import express from "express"
 import userRoutes from "./routes/users"
 import commentsRoutes from "./routes/comments"
+import postRoutes from "./routes/posts"
+import routeNotFound from "./middlewares/routeNotFound"
+import globalErrorHandler from "./middlewares/globalErrorHandler"
 
 const app = express()
 
