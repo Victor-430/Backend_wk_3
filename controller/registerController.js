@@ -15,11 +15,9 @@ const user = {
     username,
     email,
     password
-
 }
 
 res.status(201).json({message: "User registered successfully", user})
-
 
 }
 

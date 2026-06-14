@@ -1,18 +1,18 @@
 Requirements
 
 Users
-Register
-Login
+- Register
+- Login
 
 Posts
-Create post
-Get all posts
-Get single post
-Delete post
+- Create post
+- Get all posts
+- Get single post
+- Delete post
 
 Comments
-Add comment
-Get comments
+- Add comment
+- Get comments
 
 
 Endpoints
