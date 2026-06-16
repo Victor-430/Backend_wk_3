@@ -4,15 +4,18 @@ import commentsRoutes from "./routes/comments"
 import postRoutes from "./routes/posts"
 import routeNotFound from "./middlewares/routeNotFound"
 import globalErrorHandler from "./middlewares/globalErrorHandler"
+import { connectDb } from "./config/db"
 
+
+connectDb()
 const app = express()
 
 app.use(express.json(), {extended:false})
 
 
-app.use("api/users", userRoutes)
-app.use("api/posts", postRoutes)
-app.use("api/comments", commentsRoutes)
+app.use("/api/users", userRoutes)
+app.use("/api/posts", postRoutes)
+app.use("/api/comments", commentsRoutes)
 
 
 app.use(routeNotFound)
