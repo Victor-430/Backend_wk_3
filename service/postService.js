@@ -13,7 +13,9 @@ export const getPostById = async (postId) => {
 
   const post = await POSTS.findOne({ postId });
   if (!post) {
-    throw new Error("Post not found");
+    const error = new Error("Post not found");
+    error.status = 404;
+    throw error;
   }
   return post;
 };
@@ -24,3 +26,20 @@ export const getAllPosts = async () => {
     .toArray();
   return posts;
 };
+
+export const deletePostById = async (postId) => {
+    if(!postId){
+        const error = new Error("Post Id is required")
+        error.status = 400
+        throw error
+    }
+
+    const doc = await POSTS.deleteOne({postId})
+    if (doc.deletedCount === 0){
+        const error = new Error("Post not found or already deleted")
+        error.status = 404
+        throw error
+    }
+    return true
+
+}

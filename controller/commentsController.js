@@ -10,7 +10,7 @@ const addComments = async (req, res, next) => {
 
     // check if post exists
     if (!postId) {
-      return res.status(403).json({ message: "Post not found" });
+      return res.status(400).json({ message: "Post Id required" });
     }
 
     const newComment = {
@@ -26,8 +26,8 @@ const addComments = async (req, res, next) => {
       message: "Comment added successfully",
       comments,
     });
-  } catch (error) {
-    next(error);
+  } catch (err) {
+    next(err);
   }
 };
 
@@ -41,8 +41,8 @@ const getComments = async (req, res, next) => {
       message: "Comments fetched successfully",
       comments,
     });
-  } catch (error) {
-    next(error);
+  } catch (err) {
+    next(err);
   }
 };
 

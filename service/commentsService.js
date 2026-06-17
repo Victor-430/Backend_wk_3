@@ -11,7 +11,9 @@ export const addComment = async (commentData) => {
 
 export const getCommentsByPostId = async (postId) => {
   if (!postId) {
-    throw new Error("Post ID is required");
+    const error = new Error("Post ID is required");
+    error.status = 400;
+    throw error;
   }
   const comments = await COMMENTS.find({ postId })
     .sort({ createdAt: -1 })
