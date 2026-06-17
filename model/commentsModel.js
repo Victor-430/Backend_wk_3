@@ -1,5 +1,3 @@
-import { getDb } from "../config/db";
+import { getDb } from "../config/db.js";
 
-export const COMMENTS = getDb()
-  .collection("comments")
-  .createIndex({ postId: 1, createdAt: -1 });
+export const COMMENTS = getDb().collection("comments");

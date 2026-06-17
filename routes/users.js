@@ -1,6 +1,6 @@
 import {Router} from "express"
-import registerUser from "../controller/registerController"
-import loginUser from "../controller/loginController"
+import registerUser from "../controller/registerController.js"
+import loginUser from "../controller/loginController.js"
 
 const userRoutes = Router()
 

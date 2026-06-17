@@ -8,9 +8,8 @@ const addComments = async (req, res, next) => {
       return res.status(400).json({ message: "All fields are required" });
     }
 
-
     // check if post exists
-    if(!postId) {
+    if (!postId) {
       return res.status(403).json({ message: "Post not found" });
     }
 
@@ -18,13 +17,14 @@ const addComments = async (req, res, next) => {
       postId,
       title,
       content,
+      createdAt: new Date(),
     };
 
     const comments = await addComment(newComment);
 
     return res.status(201).json({
       message: "Comment added successfully",
-      comments
+      comments,
     });
   } catch (error) {
     next(error);

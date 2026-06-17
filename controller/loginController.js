@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { findUserByEmail } from "../service/userService";
+import { findUserByEmail } from "../service/userService.js";
 
 const loginUser = async (req, res, next) => {
   try {
@@ -22,7 +22,7 @@ const loginUser = async (req, res, next) => {
     const token = jwt.sign(
       { id: user.id, email: user.email },
       process.env.JWT_SECRET,
-      { expireIn: "1h" },
+      { expiresIn: "1h" },
     );
     return res.status(200).json({ message: "Login successful", token });
   } catch (err) {

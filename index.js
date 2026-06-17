@@ -1,16 +1,18 @@
 import express from "express"
-import userRoutes from "./routes/users"
-import commentsRoutes from "./routes/comments"
-import postRoutes from "./routes/posts"
-import routeNotFound from "./middlewares/routeNotFound"
-import globalErrorHandler from "./middlewares/globalErrorHandler"
-import { connectDb } from "./config/db"
+import routeNotFound from "./middleware/routeNotFound.js"
+import globalErrorHandler from "./middleware/globalErrorHandler.js"
+import { connectDb } from "./config/db.js"
 
 
-connectDb()
 const app = express()
 
 app.use(express.json(), {extended:false})
+
+await connectDb()
+
+const { default: userRoutes } = await import("./routes/users.js")
+const { default: commentsRoutes } = await import("./routes/comments.js")
+const { default: postRoutes } = await import("./routes/posts.js")
 
 
 app.use("/api/users", userRoutes)

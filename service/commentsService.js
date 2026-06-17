@@ -2,12 +2,11 @@ import { COMMENTS } from "../model/commentsModel.js";
 
 export const addComment = async (commentData) => {
   const doc = {
-    ...commentData,
-    createdAt: new Date(),
+    ...commentData
   };
 
   const result = await COMMENTS.insertOne(doc);
-  return { ...doc, _id: result.insertedId };
+  return { ...doc, commentId: result.insertedId };
 };
 
 export const getCommentsByPostId = async (postId) => {

@@ -1,4 +1,7 @@
-const createPost = (req, res, next) => {
+import { createPost as savePost } from "../service/postService.js";
+import { v4 as uuidv4 } from "uuid";
+
+const createPost = async (req, res, next) => {
  const {title, content} = req.body
 
  if (!title || !content) {
@@ -7,14 +10,16 @@ const createPost = (req, res, next) => {
 
 
  const newPost = {
-    id:uuidv4(),
+    postId:uuidv4(),
     title, 
     content,
     createdAt: new Date(),
 
- }
+  }
 
- return res.status(201).json({message: "Post created successfully", newPost})
+  await savePost(newPost)
+
+  return res.status(201).json({message: "Post created successfully", newPost})
 
 }
 
@@ -28,4 +33,4 @@ const deletePost = (req, res, next) => {
 
 }
 
-export default posts
+export default { createPost, getPost, getPosts, deletePost }

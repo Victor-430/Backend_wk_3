@@ -37,6 +37,15 @@ export const connectDb = async () => {
   db = client.db("backend_wk_3");
   await db.command({ ping: 1 });
 
+  await Promise.all([
+    db.collection("users").createIndex({ email: 1 }, { unique: true }),
+    db.collection("users").createIndex({ id: 1 }, { unique: true }),
+    db.collection("posts").createIndex({ createdAt: -1 }),
+    db.collection("posts").createIndex({ userId: 1 }),
+    db.collection("comments").createIndex({ postId: 1, createdAt: -1 }),
+    db.collection("comments").createIndex({ userId: 1 }),
+  ]);
+
   console.log(`Connected to MongoDB : ${db.databaseName}`);
   return db;
 }
