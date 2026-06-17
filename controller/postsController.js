@@ -1,5 +1,9 @@
-import { createPost as savePost } from "../service/postService.js";
-import { v4 as uuidv4 } from "uuid";
+import {
+  createPost as savePost,
+  deletePostById,
+  getAllPosts,
+  getPostById,
+} from "../service/postService.js";
 
 const createPost = async (req, res, next) => {
   try {
@@ -10,33 +14,30 @@ const createPost = async (req, res, next) => {
     }
 
     const newPost = {
-      id: uuidv4(),
       title,
       content,
+      userId: req.user._id,
       createdAt: new Date(),
     };
 
-    await savePost(newPost);
+    const savedPost = await savePost(newPost);
 
-    return res
-      .status(201)
-      .json({ message: "Post created successfully", newPost });
-  
-    } catch (err) {
+    return res.status(201).json({ message: "Post created successfully", post: savedPost });
+  } catch (err) {
     next(err);
   }
 };
 
 const getPost = async (req, res, next) => {
   try {
-    const { postId } = req.params;
-    if (!postId) {
+    const { id } = req.params;
+
+    if (!id) {
       return res.status(400).json({ message: "Post Id is required" });
     }
 
-    const post = await getPostById(postId);
+    const post = await getPostById(id);
     return res.status(200).json({ message: "Post found", post });
-
   } catch (err) {
     next(err);
   }
@@ -53,16 +54,19 @@ const getPosts = async (req, res, next) => {
 
 const deletePost = async (req, res, next) => {
   try {
-    const { postId } = req.params;
-    if (!postId) {
+    const { id } = req.params;
+
+    if (!id) {
       return res.status(400).json({ message: "Post Id is required" });
     }
 
-    if (postId !== req.user.id) {
+    const post = await getPostById(id);
+
+    if (post.userId !== req.user._id) {
       return res.status(403).json({ message: "You are not authorized to delete this post" });
     }
 
-    await deletePostById(postId);
+    await deletePostById(id);
     return res.status(204).json({ message: "Post deleted successfully" });
   } catch (err) {
     next(err);

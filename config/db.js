@@ -39,11 +39,10 @@ export const connectDb = async () => {
 
   await Promise.all([
     db.collection("users").createIndex({ email: 1 }, { unique: true }),
-    db.collection("users").createIndex({ id: 1 }, { unique: true }),
     db.collection("posts").createIndex({ createdAt: -1 }),
-    // db.collection("posts").createIndex({ userId: 1 }),
+    db.collection("posts").createIndex({ userId: 1 }),
     db.collection("comments").createIndex({ postId: 1, createdAt: -1 }),
-    // db.collection("comments").createIndex({ userId: 1 }),
+    db.collection("comments").createIndex({ userId: 1 }),
   ]);
 
   console.log(`Connected to MongoDB : ${db.databaseName}`);

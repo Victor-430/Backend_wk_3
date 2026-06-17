@@ -6,7 +6,7 @@ const postRoutes = Router()
 
 postRoutes.post("/", auth, posts.createPost)
 postRoutes.get("/", auth, posts.getPosts)
-postRoutes.get("/:id",auth,  posts.getPost)
+postRoutes.get("/:id", auth, posts.getPost)
 postRoutes.delete("/:id", auth, posts.deletePost)
 
 export default postRoutes

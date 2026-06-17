@@ -1,3 +1,4 @@
+import { ObjectId } from "mongodb";
 import { USER } from "../model/userModel.js";
 
 const findUserByEmail = async (email) => {
@@ -6,9 +7,12 @@ const findUserByEmail = async (email) => {
 };
 
 const findUserById = async (id) => {
-    
-  return await USER.findOne({ id });
-}
+  if (!ObjectId.isValid(id)) {
+    return null;
+  }
+
+  return await USER.findOne({ _id: new ObjectId(id) });
+};
 
 const createUser = async (userData) => {
   const data = await USER.insertOne(userData);

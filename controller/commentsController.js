@@ -1,30 +1,32 @@
+import { getPostById } from "../service/postService.js";
 import { addComment, getCommentsByPostId } from "../service/commentsService.js";
 
 const addComments = async (req, res, next) => {
   try {
     const { postId, title, content } = req.body;
 
-    if (!title || !content) {
+    if (!postId || !title || !content) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
-    // check if post exists
-    if (!postId) {
-      return res.status(400).json({ message: "Post Id required" });
+    const post = await getPostById(postId);
+
+    if (post.userId !== req.user._id) {
+      return res.status(403).json({ message: "You are not authorized to comment on this post" });
     }
 
     const newComment = {
       postId,
+      userId: req.user._id,
       title,
       content,
-      createdAt: new Date(),
     };
 
-    const comments = await addComment(newComment);
+    const comment = await addComment(newComment);
 
     return res.status(201).json({
       message: "Comment added successfully",
-      comments,
+      comment,
     });
   } catch (err) {
     next(err);
