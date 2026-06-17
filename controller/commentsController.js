@@ -1,6 +1,49 @@
-const comments = (req, res) => {
+import { addComment, getCommentsByPostId } from "../service/commentsService.js";
 
-}
+const addComments = async (req, res, next) => {
+  try {
+    const { postId, title, content } = req.body;
+
+    if (!title || !content) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
 
 
-export default comments
+    // check if post exists
+    if(!postId) {
+      return res.status(403).json({ message: "Post not found" });
+    }
+
+    const newComment = {
+      postId,
+      title,
+      content,
+    };
+
+    const comments = await addComment(newComment);
+
+    return res.status(201).json({
+      message: "Comment added successfully",
+      comments
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getComments = async (req, res, next) => {
+  try {
+    const { postId } = req.params;
+
+    const comments = await getCommentsByPostId(postId);
+
+    return res.status(200).json({
+      message: "Comments fetched successfully",
+      comments,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export default { addComments, getComments };

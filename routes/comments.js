@@ -1,9 +1,10 @@
 import { Router } from "express";
-import comments from "../controller/commentsController";
+import { addComments, getComments } from "../controller/commentsController";
+
 
 const commentsRoutes = Router()
 
-commentsRoutes.post("/", comments)
-commentsRoutes.get("/:id", comments)
+commentsRoutes.post("/", addComments)
+commentsRoutes.get("/:postId", getComments)
 
 export default commentsRoutes

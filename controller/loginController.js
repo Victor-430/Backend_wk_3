@@ -1,5 +1,6 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { findUserByEmail } from "../service/userService";
 
 const loginUser = async (req, res, next) => {
   try {
@@ -9,7 +10,7 @@ const loginUser = async (req, res, next) => {
       return res.status(400).json({ message: "All fields are required" });
     }
 
-    const user = await findUserEmail(email);
+    const user = await findUserByEmail(email);
     if (!user) {
       return res.status(400).json({ message: "Invalid email or password" });
     }

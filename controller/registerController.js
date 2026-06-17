@@ -1,7 +1,8 @@
 import { v4 as uuidv4 } from "uuid";
 import bcrypt from "bcrypt";
+import { findUserByEmail } from "../service/userService";
 
-const registerUser = async (req, res) => {
+const registerUser = async (req, res, next) => {
   try {
     const { username, email, password } = req.body;
 
@@ -9,20 +10,27 @@ const registerUser = async (req, res) => {
       return res.status(400).json({ message: "All fields are required" });
     }
 
-    const existingUser = await userService(email);
+    const existingUser = await findUserByEmail(email);
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const userData = {
-      id: uuidv4(),
-      username,
-      email,
+      userResponse: {
+        id: uuidv4(),
+        username,
+        email,
+      },
+      password: hashedPassword,
     };
 
+    const { password, ...userResponse } = userData;
+    await createUser(userData);
 
-    res.status(201).json({ message: "User registered successfully", userData });
+    res
+      .status(201)
+      .json({ message: "User registered successfully", userResponse });
   } catch (error) {
-    next(err);
+    next(error);
   }
 };
 

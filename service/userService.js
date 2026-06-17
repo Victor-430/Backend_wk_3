@@ -1,6 +1,6 @@
-import { USER } from "../model/userModel";
+import { USER } from "../model/userModel.js";
 
-const userService = async (email) => {
+const findUserByEmail = async (email) => {
   const findUserEmail = await USER.findOne({ email });
 
   if (findUserEmail) {
@@ -15,4 +15,5 @@ const createUser = async (userData) => {
   return data;
 };
 
-export { userService, createUser };
+export { findUserByEmail, createUser };
+
