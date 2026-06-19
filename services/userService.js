@@ -2,16 +2,24 @@ import { ObjectId } from "mongodb";
 import { USER } from "../model/userModel.js";
 
 const findUserByEmail = async (email) => {
- 
   return await USER.findOne({ email });
 };
 
 const findUserById = async (id) => {
   if (!ObjectId.isValid(id)) {
-    return null;
+    const error = new Error("Invalid User Id");
+    error.status = 400;
+    throw error;
+  }
+  const user = await USER.findOne({ _id: new ObjectId(id) });
+
+  if (!user) {
+    const error = new Error("User not found");
+    error.status = 404;
+    throw error;
   }
 
-  return await USER.findOne({ _id: new ObjectId(id) });
+  return user;
 };
 
 const createUser = async (userData) => {

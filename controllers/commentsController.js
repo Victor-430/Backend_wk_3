@@ -5,9 +5,9 @@ const addComments = async (req, res, next) => {
   try {
     const { postId, title, content } = req.body;
 
-    if (!postId || !title || !content) {
-      return res.status(400).json({ message: "All fields are required" });
-    }
+    // if (!postId || !title || !content) {
+    //   return res.status(400).json({ message: "All fields are required" });
+    // }
 
     const post = await getPostById(postId);
 

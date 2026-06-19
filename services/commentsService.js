@@ -13,12 +13,6 @@ export const addComment = async (commentData) => {
 };
 
 export const getCommentsByPostId = async (postId) => {
-  if (!postId) {
-    const error = new Error("Post ID is required");
-    error.status = 400;
-    throw error;
-  }
-
   if (!ObjectId.isValid(postId)) {
     const error = new Error("Invalid Post Id");
     error.status = 400;

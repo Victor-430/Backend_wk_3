@@ -5,6 +5,6 @@ export const createPostSchema = z.object({
   content: z.string().min(1, "Content is required"),
 });
 
-export const postIdSchema = z.object({
+export const getPostIdSchema = z.object({
     id: z.string().min(1, "Post Id is required")
 });
