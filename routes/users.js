@@ -5,7 +5,7 @@ import { auth } from "../middleware/auth.js"
 
 const userRoutes = Router()
 
-userRoutes.post("/register", auth, registerUser)
-userRoutes.post("/login", auth,loginUser )
+userRoutes.post("/register", registerUser)
+userRoutes.post("/login", loginUser )
 
 export default userRoutes

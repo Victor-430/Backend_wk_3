@@ -56,3 +56,15 @@ export const getDb = () => {
 
   return db;
 }
+
+// process.on("SIGINT", async () => {
+//   await client.close();
+//   console.log("MongoDB connection closed. App shutting down.");
+//   process.exit(0);
+// });
+
+// process.on("SIGTERM", async () => {
+//   await client.close();
+//   console.log("MongoDB connection closed. App shutting down.");
+//   process.exit(0);
+// });

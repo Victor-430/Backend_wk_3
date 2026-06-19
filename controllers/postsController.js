@@ -3,7 +3,7 @@ import {
   deletePostById,
   getAllPosts,
   getPostById,
-} from "../service/postService.js";
+} from "../services/postService.js";
 
 const createPost = async (req, res, next) => {
   try {
@@ -67,7 +67,7 @@ const deletePost = async (req, res, next) => {
     }
 
     await deletePostById(id);
-    return res.status(204).json({ message: "Post deleted successfully" });
+    return res.status(200).json({ message: "Post deleted successfully" });
   } catch (err) {
     next(err);
   }

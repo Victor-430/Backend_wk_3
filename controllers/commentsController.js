@@ -1,5 +1,5 @@
-import { getPostById } from "../service/postService.js";
-import { addComment, getCommentsByPostId } from "../service/commentsService.js";
+import { getPostById } from "../services/postService.js";
+import { addComment, getCommentsByPostId } from "../services/commentsService.js";
 
 const addComments = async (req, res, next) => {
   try {
@@ -10,10 +10,6 @@ const addComments = async (req, res, next) => {
     }
 
     const post = await getPostById(postId);
-
-    if (post.userId !== req.user._id) {
-      return res.status(403).json({ message: "You are not authorized to comment on this post" });
-    }
 
     const newComment = {
       postId,

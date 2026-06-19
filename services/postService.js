@@ -41,6 +41,7 @@ export const deletePostById = async (postId) => {
     throw error;
   }
 
+//   write ownership check here before deleting the post
   if (!ObjectId.isValid(postId)) {
     const error = new Error("Invalid Post Id");
     error.status = 400;

@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { findUserByEmail } from "../service/userService.js";
+import { findUserByEmail } from "../services/userService.js";
 
 const loginUser = async (req, res, next) => {
   try {
