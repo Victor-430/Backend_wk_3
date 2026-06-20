@@ -12,7 +12,7 @@ import { createPostSchema, getPostIdSchema } from "../validators/postValidator.j
 export const postRoutes = Router();
 
 postRoutes.post("/", auth, validate(createPostSchema), createPost);
-postRoutes.get("/:id", validate(getPostIdSchema, "params"), getPosts);
+postRoutes.get("/", getPosts);
 postRoutes.get("/:id", validate(getPostIdSchema, "params"), getPost);
 postRoutes.delete(
   "/:id",
