@@ -1,9 +1,14 @@
-import { logFailedLogin, logLogin, logRegister } from "../loggers/authLogger.js";
+import {
+  logFailedLogin,
+  logLogin,
+  logRegister,
+} from "../loggers/authLogger.js";
 import { AppError } from "../utils/AppError.js";
 import { createUser, findUserByEmail } from "./userService.js";
-import bcrypt from 'bcrypt'
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken"
 
-export const registerAuthService = async ({username,email,password}) => {
+export const registerAuthService = async ({ username, email, password }) => {
   const existingUser = await findUserByEmail(email);
   if (existingUser) {
     throw new AppError("User with this email already registered", 409);
@@ -25,20 +30,30 @@ export const registerAuthService = async ({username,email,password}) => {
     email,
   };
 
-  logRegister(email, userResponse._id)
-  return {user:userResponse}
+  logRegister(email, userResponse._id);
+  return { user: userResponse };
 };
 
-export const loginAuthService = async (email, password,ip) => {
+export const loginAuthService = async ({ email, password, ip }) => {
   const user = await findUserByEmail(email);
+  const safeUser = {
+    _id: user._id.toString(),
+    username: user.username,
+    email: user.email,
+  };
+
+  if (!user) {
+    logFailedLogin(email, ip);
+    throw new AppError("Invalid email or password", 400);
+  }
 
   const isPasswordValid = await bcrypt.compare(password, user.password);
 
-  if (!user || !isPasswordValid) {
+  if (!isPasswordValid) {
     // const error = new Error("Invalid email or password");
     // error.status = 400;
     // throw error;
-    logFailedLogin(email, ip)
+    logFailedLogin(email, ip);
     throw new AppError("Invalid email or password", 400);
   }
 
@@ -48,6 +63,6 @@ export const loginAuthService = async (email, password,ip) => {
     { expiresIn: "1h" },
   );
 
-  logLogin(email, user._id)
-  return token
+  logLogin(email, user._id);
+  return { token, user:safeUser };
 };

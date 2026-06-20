@@ -11,7 +11,7 @@ export const logAuth = (req) => {
   });
 };
 
-export const logLogin = (userId, email) => {
+export const logLogin = (email, userId) => {
   logger.info({
     type: "AUDIT",
     event: "USER_LOGIN",
