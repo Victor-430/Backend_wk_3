@@ -1,9 +1,7 @@
 export const registerAuthService = async (userData) => {
   const existingUser = await findUserByEmail(email);
   if (existingUser) {
-    return res
-      .status(409)
-      .json({ message: "User with this email already registered" });
+    throw new AppError("User with this email already registered", 409);
   }
 
   const hashedPassword = await bcrypt.hash(password, 10);
@@ -25,12 +23,15 @@ export const registerAuthService = async (userData) => {
 
 export const loginAuthService = async (email, password) => {
   const user = await findUserByEmail(email);
-  if (!user) {
-    return res.status(400).json({ message: "Invalid email or password" });
-  }
+
   const isPasswordValid = await bcrypt.compare(password, user.password);
-  if (!isPasswordValid) {
-    return res.status(400).json({ message: "Invalid email or password" });
+
+  if (!user || !isPasswordValid) {
+    // const error = new Error("Invalid email or password");
+    // error.status = 400;
+    // throw error;
+
+    throw new AppError("Invalid email or password", 400);
   }
 
   const token = jwt.sign(
