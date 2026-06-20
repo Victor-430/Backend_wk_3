@@ -2,6 +2,7 @@ import express from "express"
 import routeNotFound from "./middleware/routeNotFound.js"
 import globalErrorHandler from "./middleware/globalErrorHandler.js"
 import { connectDb } from "./config/db.js"
+import { requestLogger } from "./middleware/requestLogger.js"
 
 
 const app = express()
@@ -14,7 +15,10 @@ const { default: userRoutes } = await import("./routes/users.js")
 const { default: commentsRoutes } = await import("./routes/comments.js")
 const { default: postRoutes } = await import("./routes/posts.js")
 
+// logger
+app.use(requestLogger)
 
+// routes
 app.use("/api/users", userRoutes)
 app.use("/api/posts", postRoutes)
 app.use("/api/comments", commentsRoutes)
