@@ -1,13 +1,13 @@
 import { Router } from "express";
-import commentsController from "../controller/commentsController.js";
 import { auth } from "../middleware/auth.js";
 import { validate } from "../middleware/validate.js";
-import { addCommentsSchema } from "../validators/commentValidator.js";
+import { addCommentsSchema, getCommentsSchema } from "../validators/commentValidator.js";
+import { addComments, getComments } from "../controllers/commentsController.js";
 
 
-const commentsRoutes = Router()
+export const commentsRoutes = Router()
 
-commentsRoutes.post("/", auth, validate(addCommentsSchema),commentsController.addComments)
-commentsRoutes.get("/:postId", validate(getCommentsSchema, "params"), commentsController.getComments)
+commentsRoutes.post("/", auth, validate(addCommentsSchema),addComments)
+commentsRoutes.get("/:postId", validate(getCommentsSchema, "params"), getComments)
 
-export default commentsRoutes
+

@@ -5,7 +5,7 @@ import {
   getPostById,
 } from "../services/postService.js";
 
-const createPost = async (req, res, next) => {
+export const createPost = async (req, res, next) => {
   try {
     const { title, content } = req.body;
 
@@ -30,7 +30,7 @@ const createPost = async (req, res, next) => {
   }
 };
 
-const getPost = async (req, res, next) => {
+export const getPost = async (req, res, next) => {
   try {
     const { id } = req.params;
 
@@ -45,7 +45,7 @@ const getPost = async (req, res, next) => {
   }
 };
 
-const getPosts = async (req, res, next) => {
+export const getPosts = async (req, res, next) => {
   try {
     const posts = await getAllPosts();
     return res.status(200).json({ message: "Posts found", posts });
@@ -54,7 +54,7 @@ const getPosts = async (req, res, next) => {
   }
 };
 
-const deletePost = async (req, res, next) => {
+export const deletePost = async (req, res, next) => {
   try {
     const { id } = req.params;
 
@@ -71,4 +71,3 @@ const deletePost = async (req, res, next) => {
   }
 };
 
-export default { createPost, getPost, getPosts, deletePost };

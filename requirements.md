@@ -22,9 +22,5 @@ GET    /posts
 
 
 
-Design the API.
-
-Then say:
-Review my Week 3 API design
 
 

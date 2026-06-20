@@ -1,7 +1,7 @@
 import { getPostById } from "../services/postService.js";
 import { addComment, getCommentsByPostId } from "../services/commentsService.js";
 
-const addComments = async (req, res, next) => {
+export const addComments = async (req, res, next) => {
   try {
     const { postId, title, content } = req.body;
 
@@ -29,7 +29,7 @@ const addComments = async (req, res, next) => {
   }
 };
 
-const getComments = async (req, res, next) => {
+export const getComments = async (req, res, next) => {
   try {
     const { postId } = req.params;
 
@@ -44,4 +44,4 @@ const getComments = async (req, res, next) => {
   }
 };
 
-export default { addComments, getComments };
+

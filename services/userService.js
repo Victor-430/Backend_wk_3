@@ -1,11 +1,11 @@
 import { ObjectId } from "mongodb";
 import { USER } from "../model/userModel.js";
 
-const findUserByEmail = async (email) => {
+export const findUserByEmail = async (email) => {
   return await USER.findOne({ email });
 };
 
-const findUserById = async (id) => {
+export const findUserById = async (id) => {
   if (!ObjectId.isValid(id)) {
     const error = new Error("Invalid User Id");
     error.status = 400;
@@ -22,9 +22,8 @@ const findUserById = async (id) => {
   return user;
 };
 
-const createUser = async (userData) => {
+export const createUser = async (userData) => {
   const data = await USER.insertOne(userData);
   return data;
 };
 
-export { findUserByEmail, findUserById, createUser };

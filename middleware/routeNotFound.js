@@ -1,4 +1,6 @@
-const routeNotFound = (req, res, next) => {
+import { logRouteNotFound } from "../loggers/routeNotFoundLogger.js";
+
+export const routeNotFound = (req, res, next) => {
   logRouteNotFound(req);
 
   const err = new Error("Route not found");

@@ -1,33 +1,31 @@
-import express from "express"
-import routeNotFound from "./middleware/routeNotFound.js"
-import globalErrorHandler from "./middleware/globalErrorHandler.js"
-import { connectDb } from "./config/db.js"
-import { requestLogger } from "./middleware/requestLogger.js"
+import express from "express";
+import { userRoutes } from "./routes/users.js";
+import { postRoutes } from "./routes/posts.js";
+import { commentsRoutes } from "./routes/comments.js";
+import { validate } from "./middleware/validate.js";
+import { globalErrorHandler } from "./middleware/globalErrorHandler.js";
+import { routeNotFound } from "./middleware/routeNotFound.js";
+import { connectDb } from "./config/db.js";
+import { requestLogger } from "./middleware/requestLogger.js";
 
+await connectDb();
 
-const app = express()
+const app = express();
 
-app.use(express.json(), {extended:false})
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
-await connectDb()
-
-const { default: userRoutes } = await import("./routes/users.js")
-const { default: commentsRoutes } = await import("./routes/comments.js")
-const { default: postRoutes } = await import("./routes/posts.js")
-
-// logger
-app.use(requestLogger)
+// request logger
+app.use(requestLogger);
 
 // routes
-app.use("/api/users", userRoutes)
-app.use("/api/posts", postRoutes)
-app.use("/api/comments", commentsRoutes)
+app.use("/api/users", userRoutes);
+app.use("/api/posts", postRoutes);
+app.use("/api/comments", commentsRoutes);
 
-
-app.use(routeNotFound)
-app.use(globalErrorHandler)
+app.use(routeNotFound);
+app.use(globalErrorHandler);
 
 app.listen(5000, () => {
-    console.log("Server is running on port 5000")
-
-})
+  console.log("Server is running on port 5000");
+});

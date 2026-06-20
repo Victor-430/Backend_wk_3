@@ -1,3 +1,5 @@
+import { logger } from "../config/logger.js";
+
 export const logAuth = (req) => {
   const { method, originalUrl, user, ip } = req;
   logger.warn({

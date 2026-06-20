@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
-import { createUser, findUserByEmail } from "../service/userService.js";
+import { registerAuthService } from "../services/authService.js";
 
-const registerUser = async (req, res, next) => {
+export const registerUser = async (req, res, next) => {
   try {
     const { username, email, password } = req.body;
 
@@ -23,4 +23,4 @@ const registerUser = async (req, res, next) => {
   }
 };
 
-export default registerUser;
+

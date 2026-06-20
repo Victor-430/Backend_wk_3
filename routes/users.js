@@ -1,11 +1,12 @@
 import {Router} from "express"
-import {loginUser} from "../controller/loginController.js"
 import { auth } from "../middleware/auth.js"
-import { registerSchema } from "../validators/userValidator.js"
+import { loginSchema, registerSchema } from "../validators/userValidator.js"
+import { loginUser } from "../controllers/loginController.js"
+import { registerUser } from "../controllers/registerController.js"
+import { validate } from "../middleware/validate.js"
 
-const userRoutes = Router()
+export const userRoutes = Router()
 
 userRoutes.post("/register", validate(registerSchema), registerUser)
 userRoutes.post("/login", validate(loginSchema), loginUser )
 
-export default userRoutes

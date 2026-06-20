@@ -1,6 +1,6 @@
 import { logFailedLogin, logLogin, logRegister } from "../loggers/authLogger.js";
 
-export const registerAuthService = async (userData) => {
+export const registerAuthService = async (username,email,password) => {
   const existingUser = await findUserByEmail(email);
   if (existingUser) {
     throw new AppError("User with this email already registered", 409);
