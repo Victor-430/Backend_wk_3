@@ -9,7 +9,7 @@ export const registerUser = async (req, res, next) => {
     //   return res.status(400).json({ message: "All fields are required" });
     // }
 
-    const { userResponse } = await registerAuthService({
+    const { user } = await registerAuthService({
       username,
       email,
       password,
@@ -17,7 +17,7 @@ export const registerUser = async (req, res, next) => {
 
     res
       .status(201)
-      .json({ message: "User registered successfully", userResponse });
+      .json({ message: "User registered successfully", user });
   } catch (error) {
     next(error);
   }

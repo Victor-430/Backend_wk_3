@@ -3,7 +3,7 @@ import { POSTS } from "../model/postsModel.js";
 import { logPostCreated } from "../loggers/postLogger.js";
 
 export const createPost = async (postData) => {
-  const result = await POSTS.insertOne(postData);
+  const result = await POSTS().insertOne(postData);
 
   const userId = postData.userId 
   const id = result.insertedId
@@ -18,7 +18,7 @@ export const getPostById = async (postId) => {
     throw error;
   }
 
-  const post = await POSTS.findOne({ _id: new ObjectId(postId) });
+  const post = await POSTS().findOne({ _id: new ObjectId(postId) });
   if (!post) {
     const error = new Error("Post not found");
     error.status = 404;
@@ -29,7 +29,7 @@ export const getPostById = async (postId) => {
 };
 
 export const getAllPosts = async () => {
-  const posts = await POSTS.find().sort({ createdAt: -1 }).toArray();
+  const posts = await POSTS().find().sort({ createdAt: -1 }).toArray();
   return posts;
 };
 
@@ -49,7 +49,7 @@ export const deletePostById = async (id, userId) => {
     throw error;
   }
 
-  const doc = await POSTS.deleteOne({ _id: new ObjectId(id) });
+  const doc = await POSTS().deleteOne({ _id: new ObjectId(id) });
   if (doc.deletedCount === 0) {
     const error = new Error("Post not found or already deleted");
     error.status = 404;

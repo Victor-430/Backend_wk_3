@@ -8,7 +8,7 @@ export const addComment = async (commentData) => {
     userId: new ObjectId(commentData.userId),
   };
 
-  const result = await COMMENTS.insertOne(doc);
+  const result = await COMMENTS().insertOne(doc);
 
   const commentId = result.insertedId;
   const userId = commentData.userId;
@@ -24,7 +24,7 @@ export const getCommentsByPostId = async (postId) => {
     throw error;
   }
 
-  const comments = await COMMENTS.find({ postId: new ObjectId(postId) })
+  const comments = await COMMENTS().find({ postId: new ObjectId(postId) })
     .sort({ createdAt: -1 })
     .toArray();
 

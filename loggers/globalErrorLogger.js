@@ -2,6 +2,7 @@ import { logger } from "../config/logger.js";
 
 export const logGlobalError = (err, req) => {
   const { method, url, user } = req;
+  const startTime = Date.now()
  logger.error({
     type: "ERROR",
     method,

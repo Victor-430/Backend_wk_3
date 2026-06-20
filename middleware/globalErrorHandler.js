@@ -1,3 +1,5 @@
+import { logGlobalError } from "../loggers/globalErrorLogger.js";
+
 export const globalErrorHandler = (err, req, res, next) => {
   logGlobalError(err, req);
 

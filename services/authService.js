@@ -1,6 +1,9 @@
 import { logFailedLogin, logLogin, logRegister } from "../loggers/authLogger.js";
+import { AppError } from "../utils/AppError.js";
+import { createUser, findUserByEmail } from "./userService.js";
+import bcrypt from 'bcrypt'
 
-export const registerAuthService = async (username,email,password) => {
+export const registerAuthService = async ({username,email,password}) => {
   const existingUser = await findUserByEmail(email);
   if (existingUser) {
     throw new AppError("User with this email already registered", 409);
@@ -23,7 +26,7 @@ export const registerAuthService = async (username,email,password) => {
   };
 
   logRegister(email, userResponse._id)
-  return userResponse
+  return {user:userResponse}
 };
 
 export const loginAuthService = async (email, password,ip) => {

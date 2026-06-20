@@ -19,7 +19,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(requestLogger);
 
 // routes
-app.use("/api/users", userRoutes);
+app.use("/api/auth", userRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/comments", commentsRoutes);
 

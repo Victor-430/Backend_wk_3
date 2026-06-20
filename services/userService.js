@@ -2,7 +2,7 @@ import { ObjectId } from "mongodb";
 import { USER } from "../model/userModel.js";
 
 export const findUserByEmail = async (email) => {
-  return await USER.findOne({ email });
+  return await USER().findOne({ email });
 };
 
 export const findUserById = async (id) => {
@@ -11,7 +11,7 @@ export const findUserById = async (id) => {
     error.status = 400;
     throw error;
   }
-  const user = await USER.findOne({ _id: new ObjectId(id) });
+  const user = await USER().findOne({ _id: new ObjectId(id) });
 
   if (!user) {
     const error = new Error("User not found");
@@ -23,7 +23,7 @@ export const findUserById = async (id) => {
 };
 
 export const createUser = async (userData) => {
-  const data = await USER.insertOne(userData);
+  const data = await USER().insertOne(userData);
   return data;
 };
 
