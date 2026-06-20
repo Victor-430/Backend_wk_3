@@ -47,5 +47,5 @@ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2YTM3MGE1Nzk2MjdlMTY2OGEwNjc
         "content": "creating an api as a frontend develope",
         "userId": "6a370a579627e1668a067752",
         "createdAt": "2026-06-20T22:54:06.141Z",
-        "_id": "6a371a0e81e1ac251794fbc9"
+          "_id": "6a371d19d2b0c0959394e486"
     }

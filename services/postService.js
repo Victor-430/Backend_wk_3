@@ -1,6 +1,6 @@
 import { ObjectId } from "mongodb";
 import { POSTS } from "../model/postsModel.js";
-import { logPostCreated } from "../loggers/postLogger.js";
+import { logPostCreated, logPostDeleted } from "../loggers/postLogger.js";
 
 export const createPost = async (postData) => {
   const result = await POSTS().insertOne(postData);

@@ -1,5 +1,6 @@
 import { ObjectId } from "mongodb";
 import { COMMENTS } from "../model/commentsModel.js";
+import { logCommentCreated } from "../loggers/commentLogger.js";
 
 export const addComment = async (commentData) => {
   const doc = {

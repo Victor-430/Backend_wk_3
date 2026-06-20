@@ -1,13 +1,12 @@
 import { getPostById } from "../services/postService.js";
-import { addComment, getCommentsByPostId } from "../services/commentsService.js";
+import {
+  addComment,
+  getCommentsByPostId,
+} from "../services/commentsService.js";
 
 export const addComments = async (req, res, next) => {
   try {
     const { postId, title, content } = req.body;
-
-    // if (!postId || !title || !content) {
-    //   return res.status(400).json({ message: "All fields are required" });
-    // }
 
     const post = await getPostById(postId);
 
@@ -16,6 +15,7 @@ export const addComments = async (req, res, next) => {
       userId: req.user._id,
       title,
       content,
+      createdAt: new Date()
     };
 
     const comment = await addComment(newComment);
@@ -43,5 +43,3 @@ export const getComments = async (req, res, next) => {
     next(err);
   }
 };
-
-
