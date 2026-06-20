@@ -9,8 +9,8 @@ const loginUser = async (req, res, next) => {
     // if (!email || !password) {
     //   return res.status(400).json({ message: "All fields are required" });
     // }
-
-    const { token } = await loginAuthService({ email, password });
+const ip = req.ip || req.connection.remoteAddress;
+    const { token } = await loginAuthService({ email, password, ip });
     return res.status(200).json({ message: "Login successful", token });
   } catch (err) {
     next(err);

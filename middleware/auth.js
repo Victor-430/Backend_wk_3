@@ -1,11 +1,13 @@
 import jwt from "jsonwebtoken";
 import { findUserById } from "../services/userService.js";
+import { logAuth } from "../loggers/authLogger.js";
 
 export const auth = async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
 
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      logAuth(req);
       return res.status(401).json({ message: "Unauthorised" });
     }
 

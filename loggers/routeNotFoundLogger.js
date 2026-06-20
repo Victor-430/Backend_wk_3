@@ -1,9 +1,10 @@
 import { logger } from "../config/logger";
 
 export const logRouteNotFound = (req) => {
+  const { method, url } = req;
   logger.error({
     type: "ROUTE_NOT_FOUND",
-    method: req.method,
-    url: req.url,
+    method,
+    url,
   });
 };

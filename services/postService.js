@@ -1,9 +1,14 @@
 import { ObjectId } from "mongodb";
 import { POSTS } from "../model/postsModel.js";
+import { logPostCreated } from "../loggers/postLogger.js";
 
 export const createPost = async (postData) => {
   const result = await POSTS.insertOne(postData);
-  return { ...postData, _id: result.insertedId };
+
+  const userId = postData.userId 
+  const id = result.insertedId
+  logPostCreated(userId, id)
+  return { ...postData, _id: id };
 };
 
 export const getPostById = async (postId) => {
@@ -51,5 +56,6 @@ export const deletePostById = async (id, userId) => {
     throw error;
   }
 
+  logPostDeleted(userId, id)
   return true;
 };

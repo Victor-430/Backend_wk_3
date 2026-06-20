@@ -9,6 +9,11 @@ export const addComment = async (commentData) => {
   };
 
   const result = await COMMENTS.insertOne(doc);
+
+  const commentId = result.insertedId;
+  const userId = commentData.userId;
+
+  logCommentCreated(userId, commentId);
   return { ...doc, _id: result.insertedId };
 };
 
