@@ -50,9 +50,6 @@ export const loginAuthService = async ({ email, password, ip }) => {
   const isPasswordValid = await bcrypt.compare(password, user.password);
 
   if (!isPasswordValid) {
-    // const error = new Error("Invalid email or password");
-    // error.status = 400;
-    // throw error;
     logFailedLogin(email, ip);
     throw new AppError("Invalid email or password", 400);
   }

@@ -1,6 +1,7 @@
 import { ObjectId } from "mongodb";
 import { COMMENTS } from "../model/commentsModel.js";
 import { logCommentCreated } from "../loggers/commentLogger.js";
+import { AppError } from "../utils/AppError.js";
 
 export const addComment = async (commentData) => {
   const doc = {
@@ -20,9 +21,8 @@ export const addComment = async (commentData) => {
 
 export const getCommentsByPostId = async (postId) => {
   if (!ObjectId.isValid(postId)) {
-    const error = new Error("Invalid Post Id");
-    error.status = 400;
-    throw error;
+   
+    throw new AppError("Invalid Post Id",400)
   }
 
   const comments = await COMMENTS().find({ postId: new ObjectId(postId) })
