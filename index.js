@@ -7,10 +7,13 @@ import { globalErrorHandler } from "./middleware/globalErrorHandler.js";
 import { routeNotFound } from "./middleware/routeNotFound.js";
 import { connectDb } from "./config/db.js";
 import { requestLogger } from "./middleware/requestLogger.js";
+import { globalRateLimit } from "./middleware/rateLimiter.js";
 
 await connectDb();
 
 const app = express();
+
+app.use(globalRateLimit)
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
