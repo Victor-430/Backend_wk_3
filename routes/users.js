@@ -10,4 +10,5 @@ export const userRoutes = Router()
 
 userRoutes.post("/register", validate(registerSchema), registerUser)
 userRoutes.post("/login", authRateLimiter, validate(loginSchema), loginUser )
+// userRoutes.post("/login", authRateLimiter, loginUser )
 

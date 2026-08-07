@@ -1,8 +1,5 @@
-import cors from "cors";
-
 const allowedOrigins =
   process.env.NODE_ENV === "development" ? "http://localhost:5000" : "";
-
 
 export const corsOptions = {
   origin: (origin, callback) => {

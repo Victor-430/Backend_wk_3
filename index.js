@@ -10,6 +10,9 @@ import { requestLogger } from "./middleware/requestLogger.js";
 import { globalRateLimit } from "./middleware/rateLimiter.js";
 import helmet from "helmet";
 import { corsOptions } from "./config/cors.js";
+import { sanitizeMongo, sanitizeXss } from "./middleware/sanitize.js";
+import cors from "cors";
+
 
 await connectDb();
 
@@ -23,6 +26,9 @@ app.use(globalRateLimit);
 
 app.use(express.json({ limit: "10kb" }));
 app.use(express.urlencoded({ extended: false }));
+
+app.use(sanitizeMongo)
+app.use(sanitizeXss)
 
 // request logger
 app.use(requestLogger);

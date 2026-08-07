@@ -6,7 +6,7 @@ import {
 import { AppError } from "../utils/AppError.js";
 import { createUser, findUserByEmail } from "./userService.js";
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken"
+import jwt from "jsonwebtoken";
 
 export const registerAuthService = async ({ username, email, password }) => {
   const existingUser = await findUserByEmail(email);
@@ -36,23 +36,29 @@ export const registerAuthService = async ({ username, email, password }) => {
 
 export const loginAuthService = async ({ email, password, ip }) => {
   const user = await findUserByEmail(email);
-  const safeUser = {
-    _id: user._id.toString(),
-    username: user.username,
-    email: user.email,
-  };
 
   if (!user) {
     logFailedLogin(email, ip);
-    throw new AppError("Invalid email or password", 400);
+    throw new AppError("Invalid email or password", 401);
+  }
+
+  if (!password) {
+    logFailedLogin(email, ip);
+    throw new AppError("Invalid email or password", 401);
   }
 
   const isPasswordValid = await bcrypt.compare(password, user.password);
 
   if (!isPasswordValid) {
     logFailedLogin(email, ip);
-    throw new AppError("Invalid email or password", 400);
+    throw new AppError("Invalid email or password", 401);
   }
+
+  const safeUser = {
+    _id: user._id.toString(),
+    username: user.username,
+    email: user.email,
+  };
 
   const token = jwt.sign(
     { userId: user._id.toString() },
@@ -61,5 +67,5 @@ export const loginAuthService = async ({ email, password, ip }) => {
   );
 
   logLogin(email, user._id);
-  return { token, user:safeUser };
+  return { token, user: safeUser };
 };
