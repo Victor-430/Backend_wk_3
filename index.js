@@ -14,6 +14,7 @@ import { sanitizeMongo, sanitizeXss } from "./middleware/sanitize.js";
 import cors from "cors";
 
 
+
 await connectDb();
 
 const app = express();
@@ -27,8 +28,8 @@ app.use(globalRateLimit);
 app.use(express.json({ limit: "10kb" }));
 app.use(express.urlencoded({ extended: false }));
 
-app.use(sanitizeMongo)
-app.use(sanitizeXss)
+app.use(sanitizeMongo);
+app.use(sanitizeXss);
 
 // request logger
 app.use(requestLogger);
@@ -41,6 +42,6 @@ app.use("/api/comments", commentsRoutes);
 app.use(routeNotFound);
 app.use(globalErrorHandler);
 
-app.listen(5000, () => {
+const server = app.listen(5000, () => {
   console.log("Server is running on port 5000");
 });

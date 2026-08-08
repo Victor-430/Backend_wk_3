@@ -9,10 +9,6 @@ export const createPost = async (req, res, next) => {
   try {
     const { title, content } = req.body;
 
-    // if (!title || !content) {
-    //   return res.status(400).json({ message: "All fields are required" });
-    // }
-
     const newPost = {
       title,
       content,
@@ -70,4 +66,3 @@ export const deletePost = async (req, res, next) => {
     next(err);
   }
 };
-
