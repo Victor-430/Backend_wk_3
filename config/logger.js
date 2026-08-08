@@ -2,7 +2,7 @@ import winston, { format, transports } from "winston";
 const { combine, timestamp, printf, json, simple, colorize, errors } = format;
 
 //  rewite global error handler to distinguish for operational error and check if err instaance of apperror
-// usisng try catch in service
+// using try catch in service
 // in production where would the log be stored? in a file or in a database? if in a file, how would you manage the file size and rotation?
 
 const fileFormat = combine(timestamp(), json(), errors({ stack: true }));
@@ -21,13 +21,10 @@ const consoleFormat = combine(
 const onlyLevel = (level) =>
   format((info) => (info.level === level ? info : false))();
 
-// const exceptionLog = (msg) =>
-//   format((info) => (info.message === "UNCAUGHT EXCEPTION"? info : false))()
-
 export const logger = winston.createLogger({
   level: "info",
   format: fileFormat,
-  exitOnError:false,
+  exitOnError: false,
   transports: [
     new transports.File({
       filename: "logs/app.log",
@@ -40,21 +37,20 @@ export const logger = winston.createLogger({
     new transports.File({
       filename: "logs/security.log",
       format: combine(onlyLevel("warn"), fileFormat),
-    }),    
+    }),
   ],
-  rejectionHandlers:[
+  rejectionHandlers: [
     new transports.File({
-      filename:"logs/rejections.log",
-      format:fileFormat
-    })
+      filename: "logs/rejections.log",
+      format: fileFormat,
+    }),
   ],
-  exceptionHandlers:[
+  exceptionHandlers: [
     new transports.File({
-      filename:"logs/exceptions.log",
-      format:fileFormat,
-    })
-  
-  ]
+      filename: "logs/exceptions.log",
+      format: fileFormat,
+    }),
+  ],
 });
 
 if (process.env.NODE_ENV !== "production") {
