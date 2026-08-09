@@ -9,29 +9,36 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 export const registerAuthService = async ({ username, email, password }) => {
-  const existingUser = await findUserByEmail(email);
-  if (existingUser) {
-    throw new AppError("User with this email already registered", 409);
+  try {
+    const existingUser = await findUserByEmail(email);
+    
+    if (existingUser) {
+      throw new AppError("User with this email already registered", 409);
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const userData = {
+      username,
+      email,
+      password: hashedPassword,
+    };
+
+    const result = await createUser(userData);
+
+    const userResponse = {
+      _id: result.insertedId,
+      username,
+      email,
+    };
+
+    logRegister(email, userResponse._id);
+    return { user: userResponse };
+  } catch (err) {
+    if (err instanceof AppError) throw err;
+
+    throw new AppError("Unexpected error occurred", 500);
   }
-
-  const hashedPassword = await bcrypt.hash(password, 10);
-
-  const userData = {
-    username,
-    email,
-    password: hashedPassword,
-  };
-
-  const result = await createUser(userData);
-
-  const userResponse = {
-    _id: result.insertedId,
-    username,
-    email,
-  };
-
-  logRegister(email, userResponse._id);
-  return { user: userResponse };
 };
 
 export const loginAuthService = async ({ email, password, ip }) => {

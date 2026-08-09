@@ -3,23 +3,41 @@ import { USER } from "../model/userModel.js";
 import { AppError } from "../utils/AppError.js";
 
 export const findUserByEmail = async (email) => {
-  return await USER().findOne({ email });
+  try {
+    return await USER().findOne({ email });
+  } catch (err) {
+    if (err instanceof AppError) throw err;
+
+    throw new AppError("Unexpected error occurred", 500);
+  }
 };
 
 export const findUserById = async (id) => {
-  if (!ObjectId.isValid(id)) {
-    throw new AppError("Invalid User Id", 400);
-  }
-  const user = await USER().findOne({ _id: new ObjectId(id) });
+  try {
+    if (!ObjectId.isValid(id)) {
+      throw new AppError("Invalid User Id", 400);
+    }
+    const user = await USER().findOne({ _id: new ObjectId(id) });
 
-  if (!user) {
-    throw new AppError("User not found", 404);
-  }
+    if (!user) {
+      throw new AppError("User not found", 404);
+    }
 
-  return user;
+    return user;
+  } catch (err) {
+    if (err instanceof AppError) throw err;
+
+    throw new AppError("Unexpected error occurred", 500);
+  }
 };
 
 export const createUser = async (userData) => {
-  const data = await USER().insertOne(userData);
-  return data;
+  try {
+    const data = await USER().insertOne(userData);
+    return data;
+  } catch (err) {
+    if (err instanceof AppError) throw err;
+
+    throw new AppError("Unexpected error occurred", 500);
+  }
 };

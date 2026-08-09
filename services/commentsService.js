@@ -4,30 +4,42 @@ import { logCommentCreated } from "../loggers/commentLogger.js";
 import { AppError } from "../utils/AppError.js";
 
 export const addComment = async (commentData) => {
-  const doc = {
-    ...commentData,
-    postId: new ObjectId(commentData.postId),
-    userId: new ObjectId(commentData.userId),
-  };
+  try {
+    const doc = {
+      ...commentData,
+      postId: new ObjectId(commentData.postId),
+      userId: new ObjectId(commentData.userId),
+    };
 
-  const result = await COMMENTS().insertOne(doc);
+    const result = await COMMENTS().insertOne(doc);
 
-  const commentId = result.insertedId;
-  const userId = commentData.userId;
+    const commentId = result.insertedId;
+    const userId = commentData.userId;
 
-  logCommentCreated(userId, commentId);
-  return { ...doc, _id: result.insertedId };
+    logCommentCreated(userId, commentId);
+    return { ...doc, _id: result.insertedId };
+  } catch (err) {
+    if (err instanceof AppError) throw err;
+
+    throw new AppError("Unexpected error occurred", 500);
+  }
 };
 
 export const getCommentsByPostId = async (postId) => {
-  if (!ObjectId.isValid(postId)) {
-   
-    throw new AppError("Invalid Post Id",400)
+  try {
+    if (!ObjectId.isValid(postId)) {
+      throw new AppError("Invalid Post Id", 400);
+    }
+
+    const comments = await COMMENTS()
+      .find({ postId: new ObjectId(postId) })
+      .sort({ createdAt: -1 })
+      .toArray();
+
+    return comments;
+  } catch (err) {
+    if (err instanceof AppError) throw err;
+
+    throw new AppError("Unexpected error occurred", 500);
   }
-
-  const comments = await COMMENTS().find({ postId: new ObjectId(postId) })
-    .sort({ createdAt: -1 })
-    .toArray();
-
-  return comments;
 };
