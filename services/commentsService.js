@@ -4,8 +4,7 @@ import { logCommentCreated } from "../loggers/commentLogger.js";
 import { AppError } from "../utils/AppError.js";
 
 export const addComment = async (commentData) => {
-  try {
-    const doc = {
+   const doc = {
       ...commentData,
       postId: new ObjectId(commentData.postId),
       userId: new ObjectId(commentData.userId),
@@ -22,16 +21,10 @@ export const addComment = async (commentData) => {
 
     logCommentCreated(userId, commentId);
     return { ...doc, _id: result.insertedId };
-  } catch (err) {
-    if (err instanceof AppError) throw err;
-
-    throw new AppError("Unexpected error occurred", 500);
   }
-};
 
 export const getCommentsByPostId = async (postId) => {
-  try {
-    if (!ObjectId.isValid(postId)) {
+  if (!ObjectId.isValid(postId)) {
       throw new AppError("Invalid Post Id", 400);
     }
 
@@ -41,9 +34,4 @@ export const getCommentsByPostId = async (postId) => {
       .toArray();
 
     return comments;
-  } catch (err) {
-    if (err instanceof AppError) throw err;
-
-    throw new AppError("Unexpected error occurred", 500);
-  } 
 };
