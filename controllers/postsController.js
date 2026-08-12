@@ -30,10 +30,6 @@ export const getPost = async (req, res, next) => {
   try {
     const { id } = req.params;
 
-    // if (!id) {
-    //   return res.status(400).json({ message: "Post Id is required" });
-    // }
-
     const post = await getPostById(id);
     return res.status(200).json({ message: "Post found", post });
   } catch (err) {

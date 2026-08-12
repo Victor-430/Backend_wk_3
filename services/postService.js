@@ -6,7 +6,10 @@ import { AppError } from "../utils/AppError.js";
 export const createPost = async (postData) => {
   try {
     const result = await POSTS().insertOne(postData);
-// return error if post creation fails
+
+    if (!result.acknowledged) {
+      throw new AppError("Failed to create post", 500)
+    }
 
     const userId = postData.userId;
     const id = result.insertedId;

@@ -4,16 +4,16 @@ import { AppError } from "../utils/AppError.js";
 export const globalErrorHandler = (err, req, res, next) => {
   logGlobalError(err, req);
 
-  const statusCode = err.status || err.statusCode || 500;
-  const message = err.message || "Internal server error";
-
   if (err instanceof AppError) {
-    res.status(statusCode).json({ message });
+    return res.status(err.statusCode).json({ message: err.message });
   }
 
   if (process.env.NODE_ENV === "development") {
-    console.error(err.stack);
+    return res.status(500).json({
+      message: err.message,
+      stack: err.stack,
+    });
   }
 
-  res.status(statusCode).json({ message });
+  res.status(500).json({ message: "Internal server error" });
 };

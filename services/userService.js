@@ -4,7 +4,12 @@ import { AppError } from "../utils/AppError.js";
 
 export const findUserByEmail = async (email) => {
   try {
-    return await USER().findOne({ email });
+    const user = await USER().findOne({ email });
+
+    if (!user) {
+      throw new AppError("User not found", 404);
+    }
+    return user;
   } catch (err) {
     if (err instanceof AppError) throw err;
 
@@ -34,6 +39,10 @@ export const findUserById = async (id) => {
 export const createUser = async (userData) => {
   try {
     const data = await USER().insertOne(userData);
+
+    if (!data.acknowledged){
+      throw new AppError("User registration failed",500)
+    }
     return data;
   } catch (err) {
     if (err instanceof AppError) throw err;

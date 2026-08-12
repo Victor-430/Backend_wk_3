@@ -1,10 +1,6 @@
 import mongoSanitize from "express-mongo-sanitize";
 import xss from "xss";
 
-// export const sanitizeMongo = mongoSanitize({
-//   replaceWith:"_",
-//   sanitizeQuery:false
-// });
 
 
 // fix for use function to prevent error with mongosantize

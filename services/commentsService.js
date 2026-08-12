@@ -13,6 +13,10 @@ export const addComment = async (commentData) => {
 
     const result = await COMMENTS().insertOne(doc);
 
+     if (!result.acknowledged) {
+      throw new AppError("Failed to add comment", 500)
+    }
+
     const commentId = result.insertedId;
     const userId = commentData.userId;
 
@@ -41,5 +45,5 @@ export const getCommentsByPostId = async (postId) => {
     if (err instanceof AppError) throw err;
 
     throw new AppError("Unexpected error occurred", 500);
-  }
+  } 
 };
