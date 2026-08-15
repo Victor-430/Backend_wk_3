@@ -4,61 +4,42 @@ import {
   getAllPosts,
   getPostById,
 } from "../services/postService.js";
+import { catchAsync } from "../utils/CatchAsync.js";
 
-export const createPost = async (req, res, next) => {
-  try {
-    const { title, content } = req.body;
+export const createPost = catchAsync(async (req, res, next) => {
+  const { title, content } = req.body;
 
-    const newPost = {
-      title,
-      content,
-      userId: req.user._id,
-      createdAt: new Date(),
-    };
+  const newPost = {
+    title,
+    content,
+    userId: req.user._id,
+    createdAt: new Date(),
+  };
 
-    const savedPost = await savePost(newPost);
+  const savedPost = await savePost(newPost);
 
-    return res
-      .status(201)
-      .json({ message: "Post created successfully", post: savedPost });
-  } catch (err) {
-    next(err);
-  }
-};
+  return res
+    .status(201)
+    .json({ message: "Post created successfully", post: savedPost });
+});
 
-export const getPost = async (req, res, next) => {
-  try {
-    const { id } = req.params;
+export const getPost = catchAsync(async (req, res, next) => {
+  const { id } = req.params;
 
-    const post = await getPostById(id);
-    return res.status(200).json({ message: "Post found", post });
-  } catch (err) {
-    next(err);
-  }
-};
+  const post = await getPostById(id);
+  return res.status(200).json({ message: "Post found", post });
+});
 
-export const getPosts = async (req, res, next) => {
-  try {
-    const posts = await getAllPosts();
-    return res.status(200).json({ message: "Posts found", posts });
-  } catch (err) {
-    next(err);
-  }
-};
+export const getPosts = catchAsync(async (req, res, next) => {
+  const posts = await getAllPosts();
+  return res.status(200).json({ message: "Posts found", posts });
+});
 
-export const deletePost = async (req, res, next) => {
-  try {
-    const { id } = req.params;
+export const deletePost = catchAsync(async (req, res, next) => {
+  const { id } = req.params;
 
-    // if (!id) {
-    //   return res.status(400).json({ message: "Post Id is required" });
-    // }
+  const userId = req.user._id;
 
-    const userId = req.user._id;
-
-    await deletePostById(id, userId);
-    return res.status(200).json({ message: "Post deleted successfully" });
-  } catch (err) {
-    next(err);
-  }
-};
+  await deletePostById(id, userId);
+  return res.status(200).json({ message: "Post deleted successfully" });
+});
